@@ -1,6 +1,7 @@
 const http = require('http')
 const express = require('express')
 const app = express()
+const cors = require('cors')
 
 let notes = [
     {
@@ -27,17 +28,18 @@ let notes = [
 //     response.end(JSON.stringify(notes))
 //   })
   
-app.get('/a',(request, response) => {
+app.get('/api/notes',(request, response) => {
     response.json(notes)
 })
 
 
 app.get('/',(request, response) => {
-    response.send('<h1>Hello World!</h1>')
+    // response.send('<h1>Hello World!</h1>')
+    response.json(notes)
 })
 
 
-app.get('/notes/:id', (request, response)=> {
+app.get('/api/notes/:id', (request, response)=> {
   const idd = request.params.id
   const note = notes.find((note) => note.id == idd)
   if (note) {
@@ -49,7 +51,8 @@ app.get('/notes/:id', (request, response)=> {
 
 
 app.use(express.json())
-app.post('/notes', (request, response)=> {
+app.use(cors())
+app.post('/api/notes', (request, response)=> {
   const note = request.body
   response.json(note)
 })
